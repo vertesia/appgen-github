@@ -39,6 +39,8 @@ while the future public GitHub Action can use the repository-level `action.yml` 
 - Do not add a GitHub client secret, private key, access token, or Vertesia credential.
 - OAuth codes and installation IDs are relayed only after the opener proves knowledge of the
   single-use state.
+- The relay remains open with a loading state while Studio validates the callback and loads the
+  authorized installations; the Studio opener closes it when that work finishes.
 - Studio Server must validate the GitHub identity and installation returned through the relay.
 - Treat `installation_id` as untrusted input and verify it through GitHub before accepting a
   repository binding.

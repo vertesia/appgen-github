@@ -71,6 +71,14 @@ function showResult(title, message, isError = false) {
     if (isError) document.title = 'GitHub connection could not be returned';
 }
 
+function showPending(title, message) {
+    document.getElementById('brand-mark').classList.add('is-loading');
+    document.getElementById('relay').setAttribute('aria-busy', 'true');
+    document.getElementById('title').textContent = title;
+    document.getElementById('message').textContent = message;
+    document.getElementById('close').hidden = true;
+}
+
 function startRelay() {
     let callback;
     try {
@@ -108,8 +116,11 @@ function startRelay() {
 
         window.removeEventListener('message', onMessage);
         opener.postMessage(callback.payload, event.origin);
-        showResult('Returned to App Builder', 'This window can now close.');
-        window.setTimeout(() => window.close(), 50);
+        if (callback.flow === 'oauth') {
+            showPending('Connecting GitHub', 'Loading your GitHub organizations.');
+        } else {
+            showPending('Finishing GitHub installation', 'Refreshing your GitHub installations.');
+        }
     };
 
     window.addEventListener('message', onMessage);
