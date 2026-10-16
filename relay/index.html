@@ -6,19 +6,24 @@
         <meta name="referrer" content="no-referrer" />
         <meta
             http-equiv="Content-Security-Policy"
-            content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'none'; connect-src 'none'; font-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'"
+            content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'none'; font-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'"
         />
         <title>Returning to Vertesia App Builder</title>
         <link rel="stylesheet" href="./relay.css" />
         <script type="module" src="./relay.js"></script>
     </head>
     <body>
-        <main class="relay" aria-live="polite">
+        <main id="relay" class="relay" aria-live="polite" aria-busy="true">
             <div class="brand" aria-label="Vertesia">
-                <span class="brand-mark" aria-hidden="true">V</span>
+                <img
+                    id="brand-mark"
+                    class="brand-mark is-loading"
+                    src="./vertesia-app-builder-icon.png"
+                    alt=""
+                    aria-hidden="true"
+                />
                 <span>vertesia</span>
             </div>
-            <div id="spinner" class="spinner" role="status" aria-label="Completing GitHub connection"></div>
             <h1 id="title">Returning to App Builder</h1>
             <p id="message">Completing the GitHub connection.</p>
             <button id="close" type="button" hidden>Close</button>

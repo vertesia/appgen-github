@@ -63,7 +63,8 @@ function parseCallback(search) {
 }
 
 function showResult(title, message, isError = false) {
-    document.getElementById('spinner').hidden = true;
+    document.getElementById('brand-mark').classList.remove('is-loading');
+    document.getElementById('relay').setAttribute('aria-busy', 'false');
     document.getElementById('title').textContent = title;
     document.getElementById('message').textContent = message;
     document.getElementById('close').hidden = false;
