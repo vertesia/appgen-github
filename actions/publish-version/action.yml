@@ -1,0 +1,73 @@
+name: Publish Vertesia app version
+description: Create an immutable Vertesia App Builder version from a Git commit.
+
+branding:
+  icon: upload-cloud
+  color: blue
+
+inputs:
+  api-key:
+    description: Vertesia project API key. Store it in GitHub Actions secrets.
+    required: true
+  app-id:
+    description: App Builder application ID in the API key's Vertesia project.
+    required: true
+  commit-sha:
+    description: Exact source commit to build. Defaults to GITHUB_SHA.
+    required: false
+  server-url:
+    description: Vertesia API origin.
+    required: false
+    default: https://api.vertesia.io
+  token-server-url:
+    description: Vertesia token-service origin. By default it is derived from server-url.
+    required: false
+  wait-for-completion:
+    description: Wait for the version build and fail this action if the build fails.
+    required: false
+    default: "true"
+  timeout-seconds:
+    description: Maximum number of seconds to wait for the build.
+    required: false
+    default: "3600"
+  poll-interval-seconds:
+    description: Number of seconds between progress requests.
+    required: false
+    default: "5"
+
+outputs:
+  workflow-id:
+    description: Vertesia build workflow ID.
+    value: ${{ steps.publish.outputs.workflow-id }}
+  run-id:
+    description: Vertesia build workflow run ID.
+    value: ${{ steps.publish.outputs.run-id }}
+  status:
+    description: Last build status reported by Vertesia.
+    value: ${{ steps.publish.outputs.status }}
+  version-id:
+    description: Created immutable version ID.
+    value: ${{ steps.publish.outputs.version-id }}
+  source-commit:
+    description: Exact source commit recorded by the version.
+    value: ${{ steps.publish.outputs.source-commit }}
+  app-url:
+    description: URL of the created app version, when available.
+    value: ${{ steps.publish.outputs.app-url }}
+
+runs:
+  using: composite
+  steps:
+    - name: Create Vertesia app version
+      id: publish
+      shell: bash
+      env:
+        INPUT_API_KEY: ${{ inputs.api-key }}
+        INPUT_APP_ID: ${{ inputs.app-id }}
+        INPUT_COMMIT_SHA: ${{ inputs.commit-sha }}
+        INPUT_SERVER_URL: ${{ inputs.server-url }}
+        INPUT_TOKEN_SERVER_URL: ${{ inputs.token-server-url }}
+        INPUT_WAIT_FOR_COMPLETION: ${{ inputs.wait-for-completion }}
+        INPUT_TIMEOUT_SECONDS: ${{ inputs.timeout-seconds }}
+        INPUT_POLL_INTERVAL_SECONDS: ${{ inputs.poll-interval-seconds }}
+      run: node "$GITHUB_ACTION_PATH/publish-version.mjs"

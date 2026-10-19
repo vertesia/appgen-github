@@ -117,7 +117,7 @@ function startRelay() {
         window.removeEventListener('message', onMessage);
         opener.postMessage(callback.payload, event.origin);
         if (callback.flow === 'oauth') {
-            showPending('Connecting GitHub', 'Loading your GitHub organizations.');
+            showPending('Connecting GitHub', 'Loading your GitHub installations and repositories.');
         } else {
             showPending('Finishing GitHub installation', 'Refreshing your GitHub installations.');
         }
